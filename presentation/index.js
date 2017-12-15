@@ -12,42 +12,98 @@ require("normalize.css");
 
 const theme = createTheme(
   {
-    primary: "white",
-    secondary: "#1F2022",
+    primary: "#222233",
+    secondary: "#AACCFF",
     tertiary: "#03A9FC",
     quartenary: "#CECECE"
   },
   {
-    primary: "Montserrat",
+    primary: "#AACCFF",
     secondary: "Helvetica"
   }
 );
+// const theme = createTheme(
+//   {
+//     primary: "white",
+//     secondary: "#1F2022",
+//     tertiary: "#03A9FC",
+//     quartenary: "#CECECE"
+//   },
+//   {
+//     primary: "Montserrat",
+//     secondary: "Helvetica"
+//   }
+// );
 
 export default class Presentation extends React.Component {
   render() {
     return (
-      <Deck transition={["zoom", "slide"]} transitionDuration={500} theme={theme}>
-        <Slide transition={["zoom"]} bgColor="primary">
+      <Deck transitionDuration={500} theme={theme}>
+        <Slide transition={["fade"]} bgColor="primary">
           <Heading size={1} fit caps lineHeight={1} textColor="secondary">
-            Spectacle Boilerplate
+            GraphQL on the server
           </Heading>
-          <Text margin="10px 0 0" textColor="tertiary" size={1} fit bold>
-            open the presentation/index.js file to get started
+          <Text margin="10px 0 0" textColor="secondary" size={1} fit bold>
+            With MongoDB (or anything, really)
           </Text>
         </Slide>
-        <Slide transition={["fade"]} bgColor="tertiary">
-          <CodePane
-            style={{ fontSize: "24px" }}
-            lang="javascript"
-            source={`
-let i = 12; 
-(function(){
-  alert(i);
-})();
-          `}
-          />
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading textColor="secondary">What do these have in common?</Heading>
+          <List textColor="secondary">
+            <ListItem>Web Components</ListItem>
+            <ListItem>Service Worker</ListItem>
+            <ListItem>GraphQL</ListItem>
+          </List>
         </Slide>
-        <Slide>
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading textColor="secondary">They're primitives</Heading>
+          <Text textColor="secondary">(but that's ok!)</Text>
+        </Slide>
+        <Slide transition={["fade"]} bgColor="white">
+          <Layout>
+            <Fill>
+              <CodePane
+                style={{ fontSize: "24px" }}
+                lang="javascript"
+                source={`
+type Book {
+  _id: String
+  isbn: String
+  title: String
+  userId: String
+  publisher: String
+  pages: String
+  authors: [String]
+}
+
+type Query {
+  allBooks: [Book]
+}`}
+              />
+            </Fill>
+            &nbsp;
+            <Fill>
+              <CodePane
+                style={{ fontSize: "24px" }}
+                lang="javascript"
+                source={`
+export default {
+  Query: {
+    async allBooks(root, args, context, ast) {
+      let db = await root.db;
+      return await db
+        .collection("books")
+        .find({})
+        .toArray();
+    }
+  }
+};
+          `}
+              />
+            </Fill>
+          </Layout>
+        </Slide>
+        <Slide transition={["fade"]} bgColor="white">
           <Layout>
             <Fill>
               <CodePane
@@ -76,7 +132,7 @@ for (let i = 0; i < j; i++){
             </Fill>
           </Layout>
         </Slide>
-        <Slide transition={["fade"]} bgColor="tertiary">
+        <Slide transition={["fade"]} bgColor="primary">
           <Appear order={1}>
             <Heading size={6} textColor="primary" caps>
               Hello
@@ -98,31 +154,31 @@ for (let i = 0; i < j; i++){
             </Heading>
           </Appear>
         </Slide>
-        <Slide transition={["fade"]} bgColor="tertiary">
+        <Slide transition={["fade"]} bgColor="primary">
           <Heading size={6} textColor="primary" caps>
             Typography
           </Heading>
-          <Heading size={1} textColor="secondary">
+          <Heading size={1} textColor="primary">
             Heading 1
           </Heading>
-          <Heading size={2} textColor="secondary">
+          <Heading size={2} textColor="primary">
             Heading 2
           </Heading>
-          <Heading size={3} textColor="secondary">
+          <Heading size={3} textColor="primary">
             Heading 3
           </Heading>
-          <Heading size={4} textColor="secondary">
+          <Heading size={4} textColor="primary">
             Heading 4
           </Heading>
-          <Heading size={5} textColor="secondary">
+          <Heading size={5} textColor="primary">
             Heading 5
           </Heading>
-          <Text size={6} textColor="secondary">
+          <Text size={6} textColor="primary">
             Standard text
           </Text>
         </Slide>
-        <Slide transition={["fade"]} bgColor="primary" textColor="tertiary">
-          <Heading size={6} textColor="secondary" caps>
+        <Slide transition={["fade"]} bgColor="primary" textColor="primary">
+          <Heading size={6} textColor="primary" caps>
             Standard List
           </Heading>
           <List>
@@ -132,7 +188,7 @@ for (let i = 0; i < j; i++){
             <ListItem>Item 4</ListItem>
           </List>
         </Slide>
-        <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
+        <Slide transition={["fade"]} bgColor="primary" textColor="primary">
           <BlockQuote>
             <Quote>Example Quote</Quote>
             <Cite>Author</Cite>
