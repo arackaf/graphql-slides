@@ -59,13 +59,22 @@ export default class Presentation extends React.Component {
           <Heading textColor="secondary">They're primitives</Heading>
           <Text textColor="secondary">(but that's ok!)</Text>
         </Slide>
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading textColor="secondary">Why GraphQL?</Heading>
+          <List textColor="secondary">
+            <ListItem>Type system for queries</ListItem>
+            <ListItem>Nested / Graph-like data</ListItem>
+            <ListItem>Query language tying it together</ListItem>
+          </List>
+        </Slide>
         <Slide transition={["fade"]} bgColor="white">
           <Layout>
-            <Fill>
-              <CodePane
-                style={{ fontSize: "24px" }}
-                lang="javascript"
-                source={`
+            <Appear order={1}>
+              <Fill>
+                <CodePane
+                  style={{ fontSize: "24px" }}
+                  lang="javascript"
+                  source={`
 type Book {
   _id: String
   isbn: String
@@ -79,28 +88,30 @@ type Book {
 type Query {
   allBooks: [Book]
 }`}
-              />
-            </Fill>
+                />
+              </Fill>
+            </Appear>
             &nbsp;
-            <Fill>
-              <CodePane
-                style={{ fontSize: "24px" }}
-                lang="javascript"
-                source={`
-export default {
-  Query: {
-    async allBooks(root, args, context, ast) {
-      let db = await root.db;
-      return await db
-        .collection("books")
-        .find({})
-        .toArray();
-    }
+            <Appear order={2}>
+              <Fill>
+                <CodePane
+                  width={600}
+                  style={{ fontSize: "24px", width: 600 }}
+                  lang="javascript"
+                  source={`
+Query: {
+  async allBooks(root, args, req, ast) {
+    let db = await root.db;
+    return await db
+      .collection("books")
+      .find({})
+      .toArray();
   }
-};
+}
           `}
-              />
-            </Fill>
+                />
+              </Fill>
+            </Appear>
           </Layout>
         </Slide>
         <Slide transition={["fade"]} bgColor="white">
