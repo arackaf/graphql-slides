@@ -2,7 +2,7 @@
 import React from "react";
 
 // Import Spectacle Core tags
-import { Appear, BlockQuote, Cite, Deck, Fill, Fit, Heading, Layout, ListItem, List, Quote, Slide, Text, Code, CodePane } from "spectacle";
+import { Appear, BlockQuote, Cite, Deck, Fill, Fit, Heading, Layout, ListItem, List, Quote, Slide, Text, Code, CodePane, Image } from "spectacle";
 
 // Import theme
 import createTheme from "spectacle/lib/themes/default";
@@ -68,13 +68,17 @@ export default class Presentation extends React.Component {
           </List>
         </Slide>
         <Slide transition={["fade"]} bgColor="white">
-          <Layout>
+          <Layout style={{ marginLeft: -100 }}>
             <Appear order={1}>
               <Fill>
-                <CodePane
-                  style={{ fontSize: "24px" }}
-                  lang="javascript"
-                  source={`
+                <div style={{ width: 300 }}>
+                  <Text style={{ fontSize: "36px" }} textColor="secondary">
+                    Declare the schema
+                  </Text>
+                  <CodePane
+                    style={{ fontSize: "24px" }}
+                    lang="javascript"
+                    source={`
 type Book {
   _id: String
   isbn: String
@@ -88,17 +92,21 @@ type Book {
 type Query {
   allBooks: [Book]
 }`}
-                />
+                  />
+                </div>
               </Fill>
             </Appear>
             &nbsp;
             <Appear order={2}>
               <Fill>
-                <CodePane
-                  width={600}
-                  style={{ fontSize: "24px", width: 600 }}
-                  lang="javascript"
-                  source={`
+                <div style={{ width: 600 }}>
+                  <Text style={{ fontSize: "36px" }} textColor="secondary">
+                    Handle the query on the server
+                  </Text>
+                  <CodePane
+                    style={{ fontSize: "24px", width: 600 }}
+                    lang="javascript"
+                    source={`
 Query: {
   async allBooks(root, args, req, ast) {
     let db = await root.db;
@@ -109,10 +117,40 @@ Query: {
   }
 }
           `}
-                />
+                  />
+                </div>
+              </Fill>
+            </Appear>
+            &nbsp;
+            <Appear order={3}>
+              <Fill>
+                <div style={{ width: 250 }}>
+                  <Text style={{ fontSize: "36px" }} textColor="secondary">
+                    Run the query!
+                  </Text>
+                  <CodePane
+                    style={{ fontSize: "24px", width: 200 }}
+                    lang="javascript"
+                    source={`
+                    {
+                      allBooks {
+                        isbn
+                        title
+                      }
+                    }
+                    `}
+                  />
+                </div>
               </Fill>
             </Appear>
           </Layout>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Text style={{ fontSize: "36px" }} textColor="secondary">
+            Execute the query
+          </Text>
+          <Image width={839} height={294} src="img/graphiQL_basicQuery.png" />
         </Slide>
         <Slide transition={["fade"]} bgColor="white">
           <Layout>
