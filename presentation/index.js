@@ -410,7 +410,33 @@ type Query {
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={3} textColor="secondary">
+            Have someone else generate all that boilerplate
+          </Heading>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
           <Image src="img/awesomeGQL.png" />
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={3} textColor="secondary">
+            Have someone else generate EVERYTHING
+          </Heading>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Image src="img/graphCool.png" />
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={3} textColor="secondary">
+            But honestly doing it yourself is not hard
+          </Heading>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Image src="img/myRepo.png" />
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
