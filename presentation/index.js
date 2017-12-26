@@ -206,7 +206,7 @@ Query: {
             <Fill>
               <div style={{ width: 300 }}>
                 <Text style={{ fontSize: "36px" }} textColor="secondary">
-                  Declare the schema
+                  Update the schema
                 </Text>
                 <CodePane
                   style={{ fontSize: "24px" }}
@@ -221,7 +221,45 @@ type Query {
               </div>
             </Fill>
             <Fill>
-              <div style={{ width: 300 }}>
+              <div style={{ width: 600 }}>
+                <Text style={{ fontSize: "36px" }} textColor="secondary">
+                  And the resolver
+                </Text>
+                <CodePane
+                  style={{ fontSize: "24px" }}
+                  lang="javascript"
+                  source={`
+Query: {
+  async allBooks(root, args, context, ast) {
+    let db = await root.db;
+    let filters = {};
+
+    if (args.title) {
+      filters.title = args.title;
+    }
+
+    return await db
+      .collection("books")
+      .find(filters)
+      .toArray();
+  }
+}`}
+                />
+              </div>
+            </Fill>
+          </Layout>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading style={{ fontSize: "72px" }} textColor="secondary">
+            Lets make the query more realistic
+          </Heading>
+        </Slide>
+
+        <Slide style={{}} transition={["fade"]} bgColor="white">
+          <Layout>
+            <Fill>
+              <div style={{ marginLeft: -200, width: 400 }}>
                 <Text style={{ fontSize: "36px" }} textColor="secondary">
                   Declare the schema
                 </Text>
@@ -232,6 +270,115 @@ type Query {
 type Query {
   allBooks(
     title: String
+    title_in: [String]
+    title_contains: String
+    title_startsWith: String
+    title_endsWith: String
+  ): [Book]
+}`}
+                />
+              </div>
+            </Fill>
+            <Appear order={1}>
+              <Fill>
+                <div style={{ width: 800, marginLeft: "30px" }}>
+                  <Text style={{ fontSize: "36px" }} textColor="secondary">
+                    Declare the schema
+                  </Text>
+                  <CodePane
+                    style={{ fontSize: "14px" }}
+                    lang="javascript"
+                    source={`
+Query: {
+  async allBooks(root, args, context, ast) {
+    let db = await root.db;
+    let filters = {};
+
+    if (args.title) {
+      filters.title = args.title;
+    }
+    if (args.title_in) {
+      filters.title = { $in: args.title_in };
+    }
+    if (args.title_startsWith) {
+      filters.title = { $regex: new RegExp("^" + args.title_startsWith, "i") };
+    }
+    if (args.title_endsWith) {
+      filters.title = { $regex: new RegExp(args.title_endsWith + "$", "i") };
+    }
+    if (args.title_contains) {
+      filters.title = { $regex: new RegExp(args.title_contains, "i") };
+    }
+
+    return await db
+      .collection("books")
+      .find(filters)
+      .toArray();
+  }
+}`}
+                  />
+                </div>
+              </Fill>
+            </Appear>
+          </Layout>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Image src="img/reactionGif.gif" />
+        </Slide>
+
+        <Slide style={{}} transition={["fade"]} bgColor="white">
+          <Layout>
+            <Fill>
+              <div style={{ width: 300, marginLeft: -100 }}>
+                <CodePane
+                  style={{ fontSize: "24px" }}
+                  lang="javascript"
+                  source={`
+type Book {
+  _id: String
+  isbn: String
+  title: String
+  userId: String
+  publisher: String
+  pages: String
+  authors: [String]
+}
+
+type Query {
+  allBooks: [Book]
+}`}
+                />
+              </div>
+            </Fill>
+            <Fill>
+              <div style={{ marginLeft: -200, width: 600 }}>
+                <CodePane
+                  style={{ fontSize: "16px" }}
+                  lang="javascript"
+                  source={`
+type Query {
+  allBooks(
+    title: String
+    title_in: [String]
+    title_contains: String
+    title_startsWith: String
+    title_endsWith: String
+
+    publisher: String
+    publisher_in: [String]
+    publisher_contains: String
+    publisher_startsWith: String
+    publisher_endsWith: String
+
+    authors: [String]
+    authors_has: String
+    publisher_contains: String
+    publisher_startsWith: String
+    publisher_endsWith: String    
+
+    pages: lt: Int
+    pages: gt: Int
   ): [Book]
 }`}
                 />
@@ -240,58 +387,32 @@ type Query {
           </Layout>
         </Slide>
 
-        <Slide transition={["fade"]} bgColor="white">
-          <Layout>
-            <Fill>
-              <CodePane
-                style={{ fontSize: "24px" }}
-                lang="javascript"
-                source={`
-let i = 12; 
-(function(){
-  alert(i);
-})();
-          `}
-              />
-            </Fill>
-            &nbsp;
-            <Fill>
-              <CodePane
-                style={{ fontSize: "24px" }}
-                lang="javascript"
-                source={`
-const j = 12; 
-for (let i = 0; i < j; i++){
-  alert(i);
-}
-          `}
-              />
-            </Fill>
-          </Layout>
+        <Slide transition={["fade"]} bgColor="primary">
+          <Image src="img/jimCarreyGross.gif" />
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
-          <Appear order={1}>
-            <Heading size={6} textColor="primary" caps>
-              Hello
-            </Heading>
-          </Appear>
-          <Appear order={2}>
-            <Heading size={6} textColor="primary" caps>
-              World
-            </Heading>
-          </Appear>
-          <Appear order={3}>
-            <Heading size={6} textColor="primary" caps>
-              Adam
-            </Heading>
-          </Appear>
-          <Appear order={4}>
-            <Heading size={6} textColor="primary" caps>
-              Rackis
-            </Heading>
-          </Appear>
+          <Heading textColor="secondary">To review</Heading>
+          <List textColor="secondary">
+            <ListItem>We have to implement all our queries</ListItem>
+            <ListItem>We have to map and implement our filter</ListItem>
+          </List>
         </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading textColor="secondary">
+            But do we <i>really</i> have to...
+          </Heading>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Image src="img/homer.gif" />
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Image src="img/awesomeGQL.png" />
+        </Slide>
+
         <Slide transition={["fade"]} bgColor="primary">
           <Heading size={6} textColor="primary" caps>
             Typography
