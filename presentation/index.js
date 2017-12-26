@@ -161,7 +161,7 @@ app.use(
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
-          <Heading style={{ fontSize: "86px" }} textColor="secondary">
+          <Heading size={2} textColor="secondary">
             How do we get that query working?
           </Heading>
           <Appear order={1}>
@@ -196,7 +196,7 @@ Query: {
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
-          <Heading style={{ fontSize: "72px" }} textColor="secondary">
+          <Heading size={2} textColor="secondary">
             Lets make the query more realistic
           </Heading>
         </Slide>
@@ -251,7 +251,7 @@ Query: {
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
-          <Heading style={{ fontSize: "72px" }} textColor="secondary">
+          <Heading size={2} textColor="secondary">
             Lets make the query more realistic
           </Heading>
         </Slide>
@@ -440,47 +440,85 @@ type Query {
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
-          <Heading size={6} textColor="primary" caps>
-            Typography
+          <Heading size={3} textColor="secondary">
+            The point of GraphQL is this
           </Heading>
-          <Heading size={1} textColor="primary">
-            Heading 1
-          </Heading>
-          <Heading size={2} textColor="primary">
-            Heading 2
-          </Heading>
-          <Heading size={3} textColor="primary">
-            Heading 3
-          </Heading>
-          <Heading size={4} textColor="primary">
-            Heading 4
-          </Heading>
-          <Heading size={5} textColor="primary">
-            Heading 5
-          </Heading>
-          <Text size={6} textColor="primary">
-            Standard text
+          <Text textColor="secondary">
+            By representing all of our queries and mutations in a suitably rich, standardized query language, our data layer becomes a thin mapping
+            connecting these operations to whatever data backend we happen to use.
           </Text>
         </Slide>
-        <Slide transition={["fade"]} bgColor="primary" textColor="primary">
-          <Heading size={6} textColor="primary" caps>
-            Standard List
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={3} textColor="secondary">
+            FAQs
           </Heading>
-          <List>
-            <ListItem>Item 1</ListItem>
-            <ListItem>Item 2</ListItem>
-            <ListItem>Item 3</ListItem>
-            <ListItem>Item 4</ListItem>
-          </List>
+          <Text textColor="secondary">What about authentication?</Text>
         </Slide>
-        <Slide transition={["fade"]} bgColor="primary" textColor="primary">
-          <BlockQuote>
-            <Quote>Example Quote</Quote>
-            <Cite>Author</Cite>
-            <Appear order={2}>
-              <Fill />
-            </Appear>
-          </BlockQuote>
+
+        <Slide style={{}} transition={["fade"]} bgColor="white">
+          <Layout>
+            <Fill>
+              <div style={{ width: 800, marginLeft: "30px" }}>
+                <CodePane
+                  style={{ fontSize: "28px" }}
+                  lang="javascript"
+                  source={`
+Query: {
+  async allBooks(root, args, context, ast) {
+    // ------------------------^
+    // that's the request object from Express
+    // with your authenticated user object
+
+    // Plug it into some sort of 
+    // cross-cutting middleware
+
+    return [];
+  }
+}`}
+                />
+              </div>
+            </Fill>
+          </Layout>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="white">
+          <Layout>
+            <Fill>
+              <div style={{ width: 800, marginLeft: "30px", marginTop: -50 }}>
+                <CodePane
+                  style={{ fontSize: "17px" }}
+                  lang="javascript"
+                  source={`
+export default class BooksMiddleware {
+  async queryPreprocess(root, args, context, ast) {
+    args.userId = args.publicUserId || context.user.id;
+    if (args.PAGE_SIZE > 100) {
+      args.PAGE_SIZE = 100; //don't allow user to request too much data
+    }
+  }
+  queryMiddleware(queryPacket, root, args, context, ast) {
+    let { $project, $sort } = queryPacket;
+    $project.titleLower = { $toLower: "$title" };
+    if (typeof $sort.title !== "undefined") {
+      $sort.titleLower = $sort.title;
+      delete $sort.title;
+    }
+  }
+  async beforeUpdate(match, updates, root, args, context, ast) {
+    match.userId = context.user.id;
+    if (/^\\/uploads\\//.test(updates.$set.smallImage)) {
+      updates.$set.smallImage = await saveLocalImageToS3(updates.$set.smallImage);
+    }
+  }
+  adjustResults(results) {
+    results.forEach(book => book.dateAdded = +book._id.getTimestamp());
+  }
+}`}
+                />
+              </div>
+            </Fill>
+          </Layout>
         </Slide>
       </Deck>
     );
