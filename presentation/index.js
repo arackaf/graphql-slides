@@ -81,8 +81,7 @@ export default class Presentation extends React.Component {
                   <CodePane
                     style={{ fontSize: "24px" }}
                     lang="javascript"
-                    source={`
-type Book {
+                    source={`type Book {
   _id: String
   isbn: String
   title: String
@@ -90,10 +89,6 @@ type Book {
   publisher: String
   pages: String
   authors: [String]
-}
-
-type Query {
-  allBooks: [Book]
 }`}
                   />
                 </div>
@@ -107,16 +102,11 @@ type Query {
                     And the query
                   </Text>
                   <CodePane
-                    style={{ fontSize: "24px", width: 200 }}
+                    style={{ fontSize: "24px", width: 300 }}
                     lang="javascript"
-                    source={`
-{
-  allBooks {
-    isbn
-    title
-  }
-}
-                    `}
+                    source={`type Query {
+  allBooks: [Book]
+}`}
                   />
                 </div>
               </Fill>
@@ -132,7 +122,8 @@ type Query {
             <CodePane
               style={{ fontSize: "24px", width: 850 }}
               lang="javascript"
-              source={`
+              source={`import { makeExecutableSchema } from "graphql-tools";
+
 const db = MongoClient.connect(MONGO_CONNECTION);
 const root = { db };
 const executableSchema = makeExecutableSchema({ 
@@ -172,12 +163,31 @@ app.use(
         </Slide>
 
         <Slide transition={["fade"]} bgColor="white">
-          <div style={{ width: 600 }}>
-            <CodePane
-              style={{ fontSize: "24px", width: 600 }}
-              lang="javascript"
-              source={`
-Query: {
+          <Layout>
+            <Fill>
+              <div style={{ width: 300 }}>
+                <Text style={{ fontSize: "36px" }} textColor="secondary">
+                  Query from before
+                </Text>
+                <CodePane
+                  style={{ fontSize: "24px" }}
+                  lang="javascript"
+                  source={`type Query {
+  allBooks: [Book]
+}`}
+                />
+              </div>
+            </Fill>
+            <Fill>
+              <Appear order={1}>
+                <div style={{ width: 600 }}>
+                  <Text style={{ fontSize: "36px" }} textColor="secondary">
+                    And the resolver
+                  </Text>
+                  <CodePane
+                    style={{ fontSize: "24px" }}
+                    lang="javascript"
+                    source={`Query: {
   async allBooks(root, args, req, ast) {
     let db = await root.db;
     return await db
@@ -185,10 +195,12 @@ Query: {
       .find({})
       .toArray();
   }
-}
-          `}
-            />
-          </div>
+}`}
+                  />
+                </div>
+              </Appear>
+            </Fill>
+          </Layout>
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
@@ -211,8 +223,7 @@ Query: {
                 <CodePane
                   style={{ fontSize: "24px" }}
                   lang="javascript"
-                  source={`
-type Query {
+                  source={`type Query {
   allBooks(
     title: String
   ): [Book]
@@ -221,15 +232,15 @@ type Query {
               </div>
             </Fill>
             <Fill>
-              <div style={{ width: 600 }}>
-                <Text style={{ fontSize: "36px" }} textColor="secondary">
-                  And the resolver
-                </Text>
-                <CodePane
-                  style={{ fontSize: "24px" }}
-                  lang="javascript"
-                  source={`
-Query: {
+              <Appear order={1}>
+                <div style={{ width: 600 }}>
+                  <Text style={{ fontSize: "36px" }} textColor="secondary">
+                    And the resolver
+                  </Text>
+                  <CodePane
+                    style={{ fontSize: "24px" }}
+                    lang="javascript"
+                    source={`Query: {
   async allBooks(root, args, context, ast) {
     let db = await root.db;
     let filters = {};
@@ -244,8 +255,9 @@ Query: {
       .toArray();
   }
 }`}
-                />
-              </div>
+                  />
+                </div>
+              </Appear>
             </Fill>
           </Layout>
         </Slide>
@@ -420,6 +432,18 @@ type Query {
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
+          <Layout>
+            <Fill>
+              <Image src="img/homer.gif" />
+            </Fill>
+            &nbsp; &nbsp;
+            <Fill>
+              <Image src="img/homer.gif" />
+            </Fill>
+          </Layout>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
           <Heading size={3} textColor="secondary">
             Have someone else generate EVERYTHING
           </Heading>
@@ -427,6 +451,10 @@ type Query {
 
         <Slide transition={["fade"]} bgColor="primary">
           <Image src="img/graphCool.png" />
+          <br />
+          <Heading size={4} textColor="secondary">
+            GraphQL + backend as a service
+          </Heading>
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
@@ -440,9 +468,10 @@ type Query {
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
-          <Heading size={3} textColor="secondary">
+          <Heading size={4} textColor="secondary">
             The point of GraphQL is this
           </Heading>
+          <br />
           <Text textColor="secondary">
             By representing all of our queries and mutations in a suitably rich, standardized query language, our data layer becomes a thin mapping
             connecting these operations to whatever data backend we happen to use.
@@ -451,9 +480,14 @@ type Query {
 
         <Slide transition={["fade"]} bgColor="primary">
           <Heading size={3} textColor="secondary">
-            FAQs
+            FAQs / Likely questions
           </Heading>
-          <Text textColor="secondary">What about authentication?</Text>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={3} textColor="secondary">
+            What about authentication?
+          </Heading>
         </Slide>
 
         <Slide style={{}} transition={["fade"]} bgColor="white">
@@ -515,6 +549,62 @@ export default class BooksMiddleware {
     results.forEach(book => book.dateAdded = +book._id.getTimestamp());
   }
 }`}
+                />
+              </div>
+            </Fill>
+          </Layout>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={3} textColor="secondary">
+            What about selecting only queried fields
+          </Heading>
+        </Slide>
+
+        <Slide style={{}} transition={["fade"]} bgColor="white">
+          <Layout>
+            <Fill>
+              <div style={{ width: 800, marginLeft: "30px" }}>
+                <CodePane
+                  style={{ fontSize: "28px" }}
+                  lang="javascript"
+                  source={`
+Query: {
+  async allBooks(root, args, context, ast) {
+    // --------------------------------^
+    // that's the abstract syntax tree of the 
+    // current query.  Inspect it to see what 
+    // was requested 
+
+    return [];
+  }
+}`}
+                />
+              </div>
+            </Fill>
+          </Layout>
+        </Slide>
+
+        <Slide style={{}} transition={["fade"]} bgColor="white">
+          <Layout>
+            <Fill>
+              <div style={{ width: 800 }}>
+                <CodePane
+                  style={{ fontSize: "22px" }}
+                  lang="javascript"
+                  source={`export function getNestedQueryInfo(ast, queryName) {
+  let fieldNode = ast.fieldNodes.find(fn => fn.kind == "Field");
+
+  // ...
+
+  let selections = new Map(
+    fieldNode.selectionSet.selections.map(
+      sel => [
+        sel.name.value, 
+        sel.selectionSet == null ? true : getSelections(sel)
+      ]
+    )
+  );`}
                 />
               </div>
             </Fill>
