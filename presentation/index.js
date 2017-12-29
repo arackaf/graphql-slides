@@ -48,7 +48,9 @@ export default class Presentation extends React.Component {
           </Text>
         </Slide>
         <Slide transition={["fade"]} bgColor="primary">
-          <Heading textColor="secondary">What do these have in common?</Heading>
+          <Heading size={3} textColor="secondary">
+            What do these have in common?
+          </Heading>
           <List textColor="secondary">
             <ListItem>Web Components</ListItem>
             <ListItem>Service Worker</ListItem>
@@ -60,7 +62,20 @@ export default class Presentation extends React.Component {
           <Text textColor="secondary">(and that's a good thing!)</Text>
         </Slide>
         <Slide transition={["fade"]} bgColor="primary">
-          <Heading textColor="secondary">Why GraphQL?</Heading>
+          <Heading size={3} textColor="secondary">
+            Primitives?
+          </Heading>
+          <List textColor="secondary">
+            <ListItem>Low-level, useful tool</ListItem>
+            <ListItem>Inconvenient to use directly—BUT...</ListItem>
+            <ListItem>Can be built on easily</ListItem>
+            <ListItem>Low level</ListItem>
+          </List>
+        </Slide>
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={3} textColor="secondary">
+            Why GraphQL?
+          </Heading>
           <List textColor="secondary">
             <ListItem>Type system for queries</ListItem>
             <ListItem>Nested / Graph-like data</ListItem>
@@ -209,7 +224,7 @@ app.use(
 
         <Slide transition={["fade"]} bgColor="primary">
           <Heading size={2} textColor="secondary">
-            Lets make the query more realistic
+            Let's make the query more realistic
           </Heading>
         </Slide>
 
@@ -264,7 +279,7 @@ app.use(
 
         <Slide transition={["fade"]} bgColor="primary">
           <Heading size={2} textColor="secondary">
-            Lets make the query more realistic
+            Let's make the query <i>even more</i> realistic
           </Heading>
         </Slide>
 
@@ -278,8 +293,7 @@ app.use(
                 <CodePane
                   style={{ fontSize: "24px" }}
                   lang="javascript"
-                  source={`
-type Query {
+                  source={`type Query {
   allBooks(
     title: String
     title_in: [String]
@@ -300,8 +314,7 @@ type Query {
                   <CodePane
                     style={{ fontSize: "14px" }}
                     lang="javascript"
-                    source={`
-Query: {
+                    source={`Query: {
   async allBooks(root, args, context, ast) {
     let db = await root.db;
     let filters = {};
@@ -346,8 +359,7 @@ Query: {
                 <CodePane
                   style={{ fontSize: "24px" }}
                   lang="javascript"
-                  source={`
-type Book {
+                  source={`type Book {
   _id: String
   isbn: String
   title: String
@@ -368,8 +380,7 @@ type Query {
                 <CodePane
                   style={{ fontSize: "16px" }}
                   lang="javascript"
-                  source={`
-type Query {
+                  source={`type Query {
   allBooks(
     title: String
     title_in: [String]
@@ -404,34 +415,42 @@ type Query {
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
-          <Heading textColor="secondary">To review</Heading>
+          <Heading size={3} textColor="secondary">
+            To review
+          </Heading>
           <List textColor="secondary">
             <ListItem>We have to implement all our queries</ListItem>
-            <ListItem>We have to map and implement our filter</ListItem>
+            <ListItem>We have to map and implement our filters</ListItem>
           </List>
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
-          <Heading textColor="secondary">
+          <Heading size={3} textColor="secondary">
             But do we <i>really</i> have to...
           </Heading>
+          <br />
+          <Image src="img/trap.jpg" />
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={4} textColor="secondary">
+            Someone else can generate the boilerplate
+          </Heading>
           <Image src="img/homer.gif" />
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
-          <Heading size={3} textColor="secondary">
-            Have someone else generate all that boilerplate
+          <Heading size={6} textColor="secondary">
+            Awesome GraphQL
           </Heading>
-        </Slide>
-
-        <Slide transition={["fade"]} bgColor="primary">
           <Image src="img/awesomeGQL.png" />
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={4} textColor="secondary">
+            Have someone else generate EVERYTHING
+          </Heading>
+          <br />
           <Layout>
             <Fill>
               <Image src="img/homer.gif" />
@@ -441,12 +460,6 @@ type Query {
               <Image src="img/homer.gif" />
             </Fill>
           </Layout>
-        </Slide>
-
-        <Slide transition={["fade"]} bgColor="primary">
-          <Heading size={3} textColor="secondary">
-            Have someone else generate EVERYTHING
-          </Heading>
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
@@ -473,8 +486,8 @@ type Query {
           </Heading>
           <br />
           <Text textColor="secondary">
-            By representing all of our queries and mutations in a suitably rich, standardized query language, our data layer becomes a thin mapping
-            connecting these operations to whatever data backend we happen to use.
+            By representing all of our queries and mutations in a rich, standardized query language, our data layer becomes a thin mapping connecting
+            these operations to whatever data backend we happen to use.
           </Text>
         </Slide>
 
@@ -609,6 +622,12 @@ Query: {
               </div>
             </Fill>
           </Layout>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={3} textColor="secondary">
+            That's what the server looks like. What about the client?
+          </Heading>
         </Slide>
       </Deck>
     );
