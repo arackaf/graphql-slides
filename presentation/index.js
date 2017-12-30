@@ -10,6 +10,8 @@ import createTheme from "spectacle/lib/themes/default";
 // Require CSS
 require("normalize.css");
 
+import CodeSlide from "spectacle-code-slide";
+
 const theme = createTheme(
   {
     primary: "#222233",
@@ -164,6 +166,39 @@ app.use(
             Execute the query
           </Text>
           <Image width={839} height={294} src="img/graphiQL_basicQuery.png" />
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="white">
+          <div style={{ width: 600 }} style={{ marginTop: -30 }}>
+            <Text style={{ fontSize: "36px" }} textColor="secondary">
+              Get your server up and running
+            </Text>
+            <CodePane
+              style={{ fontSize: "20px", width: 850 }}
+              lang="javascript"
+              source={`getBlog(_id: \"\${obj._id}\"){
+  Blog{
+    title, 
+    content, 
+    author{
+      name, 
+      favoriteTag{
+        name
+      }
+    }, 
+    comments{
+      text, 
+      reviewers{
+        name
+      },
+      author{
+        name
+      }
+    }
+  }
+}`}
+            />
+          </div>
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
@@ -387,23 +422,23 @@ type Query {
     title_contains: String
     title_startsWith: String
     title_endsWith: String
-
+    
     publisher: String
     publisher_in: [String]
     publisher_contains: String
     publisher_startsWith: String
     publisher_endsWith: String
-
+    
     authors: [String]
     authors_has: String
     publisher_contains: String
     publisher_startsWith: String
     publisher_endsWith: String    
-
+    
     pages: lt: Int
     pages: gt: Int
   ): [Book]
-}`}
+  }`}
                 />
               </div>
             </Fill>
@@ -431,6 +466,60 @@ type Query {
           <br />
           <Image src="img/trap.jpg" />
         </Slide>
+
+        <CodeSlide
+          transition={["fade"]}
+          style={{ color: "white" }}
+          lang="js"
+          code={`type Book {
+  _id: String
+  isbn: String
+  title: String
+  userId: String
+  publisher: String
+  pages: String
+  authors: [String]
+}
+          
+type Query {
+  allBooks(
+    title: String
+    title_in: [String]
+    title_contains: String
+    title_startsWith: String
+    title_endsWith: String
+  ): [Book]
+}
+
+
+async allBooks(root, args, context, ast) {
+  let db = await root.db;
+  let filters = {};
+
+  if (args.title) 
+    filters.title = args.title;
+  if (args.title_in) 
+    filters.title = { $in: args.title_in };
+
+  if (args.title_startsWith)
+    filters.title = { $regex: new RegExp("^" + args.title_startsWith, "i") };
+  if (args.title_endsWith)
+    filters.title = { $regex: new RegExp(args.title_endsWith + "$", "i") };
+  if (args.title_contains)
+    filters.title = { $regex: new RegExp(args.title_contains, "i") };
+
+  return await db
+    .collection("books")
+    .find(filters)
+    .toArray();
+}`}
+          ranges={[
+            { loc: [0, 0], title: "What does this boil down to" },
+            { loc: [3, 4], title: "Property on our type" },
+            { loc: [12, 17], title: "To arguments in our query" },
+            { loc: [25, 36], title: "To filters in our resolver" }
+          ]}
+        />
 
         <Slide transition={["fade"]} bgColor="primary">
           <Heading size={4} textColor="secondary">
