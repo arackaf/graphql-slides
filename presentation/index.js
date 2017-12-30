@@ -718,6 +718,134 @@ Query: {
             That's what the server looks like. What about the client?
           </Heading>
         </Slide>
+
+        <Slide style={{}} transition={["fade"]} bgColor="white">
+          <div style={{ width: 900 }}>
+            <CodePane
+              style={{ fontSize: "16px" }}
+              lang="javascript"
+              source={`return gqlGet(\`query ALL_BOOKS_V_\${version} {
+  allBooks(
+    PAGE: \${bookSearch.page}
+    PAGE_SIZE: \${bookSearch.pageSize}
+    SORT: \${sortObject}
+    \${args(
+      strArg("title_contains", bookSearch.search),
+      strArrArg("subjects_containsAny", Object.keys(bookSearch.subjects)),
+      strArg("authors_textContains", bookSearch.author),
+      bookSearch.pages != "" 
+        ? numArg(bookSearch.pagesOp == "lt" ? "pages_lt" : "pages_gt", bookSearch.pages) 
+        : null
+    )}
+  ){
+    Books{
+      _id
+      title
+      isbn
+      pages
+      smallImage
+      subjects
+      authors
+    }, Meta {count}
+  }
+}\`).then(resp => {})`}
+            />
+          </div>
+        </Slide>
+
+        <Slide style={{}} transition={["fade"]} bgColor="white">
+          <div style={{ width: 900 }}>
+            <CodePane
+              style={{ fontSize: "16px" }}
+              lang="javascript"
+              source={`export const strArg = (name, value, emptyVal = "") => {
+  if (value == null || value === emptyVal) return "";
+  return \`\${name}:"\${value}"\`;
+};
+export const numArg = (name, value, emptyVal = "") => {
+  if (value == null || value === emptyVal || isNaN(value)) return "";
+  return \`\${name}:\${value}\`;
+};
+export const boolArg = (name, value, emptyVal = "") => {
+  if (value == null || value === emptyVal) return "";
+  return \`\${name}:\${value ? true : false}\`;
+};
+
+export const strArrArg = (name, values, sendEmpty = false) => {
+  if (values == null || (!sendEmpty && !values.length)) return "";
+  return \`\${name}:\${JSON.stringify(values)}\`;
+};
+
+export const gqlGet = query => fetch(
+  \`/graphql?query=\${encodeURIComponent(compress(query))}\`, 
+  { credentials: "include" }
+).then(resp => resp.json());`}
+            />
+          </div>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Image src="img/homer.gif" />
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={3} textColor="secondary">
+            Tons of options, but my favorite is ...
+            <Appear order={1}>
+              <Image src="img/apollo.png" />
+            </Appear>
+          </Heading>
+        </Slide>
+
+        <Slide style={{}} transition={["fade"]} bgColor="white">
+          <div style={{ width: 900 }}>
+            <CodePane
+              style={{ fontSize: "22px" }}
+              lang="javascript"
+              source={`import React, { Component } from 'react';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+  
+class Profile extends Component { ... }
+
+// We use the gql tag to parse our query string into a query document
+const CurrentUserForLayout = gql\`
+  query CurrentUserForLayout {
+    currentUser {
+      login
+      avatar_url
+    }
+  }
+\`;
+
+const ProfileWithData = graphql(CurrentUserForLayout)(Profile);`}
+            />
+          </div>
+        </Slide>
+
+        <Slide style={{}} transition={["fade"]} bgColor="white">
+          <div style={{ width: 900 }}>
+            <CodePane
+              style={{ fontSize: "22px" }}
+              lang="javascript"
+              source={`//Maybe someday soon...
+//(but not today - this code is made up - don't try to run it)
+import React, { Component } from 'react';
+import { gqlQuery } from 'react-apollo';
+
+@gqlQuery(\`
+query CurrentUserForLayout {
+  currentUser {
+    login
+    avatar_url
+  }
+}
+\`)
+class Profile extends Component { ... }
+`}
+            />
+          </div>
+        </Slide>
       </Deck>
     );
   }
