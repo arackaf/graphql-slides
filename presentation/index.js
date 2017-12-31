@@ -691,9 +691,9 @@ Query: {
                 <CodePane
                   style={{ fontSize: "22px" }}
                   lang="javascript"
-                  source={`let fieldNode = fieldNode.selectionSet.selections.find(
-  fn => fn.kind == "Field" && fn.name && fn.name.value == path
-);
+                  source={`let fieldNode = ast.fieldNodes 
+  ? ast.fieldNodes.find(fn => fn.kind == "Field") 
+  : ast;
 
 // ...
 
