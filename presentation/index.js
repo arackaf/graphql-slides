@@ -65,7 +65,7 @@ export default class Presentation extends React.Component {
         </Slide>
         <Slide transition={["fade"]} bgColor="primary">
           <Heading size={3} textColor="secondary">
-            Primitives?
+            Primitive?
           </Heading>
           <List textColor="secondary">
             <ListItem>Low-level, useful tool</ListItem>
@@ -170,9 +170,6 @@ app.use(
 
         <Slide transition={["fade"]} bgColor="white">
           <div style={{ width: 600 }} style={{ marginTop: -30 }}>
-            <Text style={{ fontSize: "36px" }} textColor="secondary">
-              Get your server up and running
-            </Text>
             <CodePane
               style={{ fontSize: "20px", width: 850 }}
               lang="javascript"
@@ -628,7 +625,7 @@ Query: {
                   source={`
 export default class BooksMiddleware {
   async queryPreprocess(root, args, context, ast) {
-    args.userId = args.publicUserId || context.user.id;
+    args.userId = context.user.id;
     if (args.PAGE_SIZE > 100) {
       args.PAGE_SIZE = 100; //don't allow user to request too much data
     }
@@ -694,19 +691,20 @@ Query: {
                 <CodePane
                   style={{ fontSize: "22px" }}
                   lang="javascript"
-                  source={`export function getNestedQueryInfo(ast, queryName) {
-  let fieldNode = ast.fieldNodes.find(fn => fn.kind == "Field");
+                  source={`let fieldNode = fieldNode.selectionSet.selections.find(
+  fn => fn.kind == "Field" && fn.name && fn.name.value == path
+);
 
-  // ...
+// ...
 
-  let selections = new Map(
-    fieldNode.selectionSet.selections.map(
-      sel => [
-        sel.name.value, 
-        sel.selectionSet == null ? true : getSelections(sel)
-      ]
-    )
-  );`}
+let selections = new Map(
+  fieldNode.selectionSet.selections.map(
+    sel => [
+      sel.name.value, 
+      sel.selectionSet == null ? true : getSelections(sel)
+    ]
+  )
+);`}
                 />
               </div>
             </Fill>
@@ -758,7 +756,9 @@ Query: {
             <CodePane
               style={{ fontSize: "16px" }}
               lang="javascript"
-              source={`export const strArg = (name, value, emptyVal = "") => {
+              source={`export const args = (...args) => args.filter(s => s).join("\\n");
+
+export const strArg = (name, value, emptyVal = "") => {
   if (value == null || value === emptyVal) return "";
   return \`\${name}:"\${value}"\`;
 };
