@@ -131,6 +131,45 @@ export default class Presentation extends React.Component {
           </Layout>
         </Slide>
 
+        <CodeSlide
+          transition={["fade"]}
+          style={{ color: "white" }}
+          lang="js"
+          code={`allBooks{
+  Books{
+    _id
+    title
+  }
+}
+
+getBlog(_id: "456"){
+  Blog{
+    title, 
+    content, 
+    author{
+      name
+    }, 
+    comments{
+      text, 
+      moderators{
+        name
+      },
+      author{
+        name
+      }
+    }
+  }
+}`}
+          ranges={[
+            { loc: [0, 6], title: "Running a basic query" },
+            { loc: [0, 1], title: "Name of the query" },
+            { loc: [1, 5], title: "Telling GraphQL what data we want" },
+            { loc: [7, 8], title: "We can also pass arguments" },
+            { loc: [11, 14], title: "Nested relationships are supported" },
+            { loc: [14, 23], title: "As deeply as needed" }
+          ]}
+        />
+
         <Slide transition={["fade"]} bgColor="white">
           <div style={{ width: 600 }} style={{ marginTop: -30 }}>
             <Text style={{ fontSize: "36px" }} textColor="secondary">
@@ -163,39 +202,9 @@ app.use(
 
         <Slide transition={["fade"]} bgColor="primary">
           <Text style={{ fontSize: "36px" }} textColor="secondary">
-            Execute the query
+            GraphiQL - your (built-in!) REPL
           </Text>
           <Image width={839} height={294} src="img/graphiQL_basicQuery.png" />
-        </Slide>
-
-        <Slide transition={["fade"]} bgColor="white">
-          <div style={{ width: 600 }} style={{ marginTop: -30 }}>
-            <CodePane
-              style={{ fontSize: "20px", width: 850 }}
-              lang="javascript"
-              source={`getBlog(_id: \"\${obj._id}\"){
-  Blog{
-    title, 
-    content, 
-    author{
-      name, 
-      favoriteTag{
-        name
-      }
-    }, 
-    comments{
-      text, 
-      reviewers{
-        name
-      },
-      author{
-        name
-      }
-    }
-  }
-}`}
-            />
-          </div>
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
@@ -788,9 +797,34 @@ export const gqlGet = query => fetch(
           <Image src="img/homer.gif" />
         </Slide>
 
+        <Slide style={{}} transition={["fade"]} bgColor="white">
+          <div style={{ width: 900 }}>
+            <CodePane
+              style={{ fontSize: "22px" }}
+              lang="javascript"
+              source={`import { request } from 'graphql-request'
+ 
+const query = \`query getMovie($title: String!) {
+  Movie(title: $title) {
+    releaseDate
+    actors {
+      name
+    }
+  }
+}\`
+  
+const variables = {
+  title: 'Inception'
+}
+  
+request('my-endpoint', query, variables).then(data => console.log(data))`}
+            />
+          </div>
+        </Slide>
+
         <Slide transition={["fade"]} bgColor="primary">
           <Heading size={3} textColor="secondary">
-            Tons of options, but my favorite is ...
+            Tons of other options, but my favorite is ...
             <Appear order={1}>
               <Image src="img/apollo.png" />
             </Appear>
@@ -834,13 +868,13 @@ import React, { Component } from 'react';
 import { gqlQuery } from 'react-apollo';
 
 @gqlQuery(\`
-query CurrentUserForLayout {
-  currentUser {
-    login
-    avatar_url
-  }
-}
-\`)
+  query CurrentUserForLayout {
+    currentUser {
+      login
+      avatar_url
+    }
+  }\`
+)
 class Profile extends Component { ... }
 `}
             />
