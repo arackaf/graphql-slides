@@ -114,15 +114,38 @@ export default class Presentation extends React.Component {
             &nbsp;
             <Appear order={2}>
               <Fill>
-                <div style={{ width: 250 }}>
+                <div style={{ width: 400 }}>
                   <Text style={{ fontSize: "36px" }} textColor="secondary">
                     And the query
+                  </Text>
+                  <CodePane
+                    style={{ fontSize: "24px", width: 400 }}
+                    lang="javascript"
+                    source={`type BookQueryResults {
+  Books: [Book]
+}
+                    
+type Query {
+  allBooks: BookQueryResults
+}`}
+                  />
+                </div>
+              </Fill>
+            </Appear>
+            &nbsp;
+            <Appear order={3}>
+              <Fill>
+                <div style={{ width: 300 }}>
+                  <Text style={{ fontSize: "36px" }} textColor="secondary">
+                    With arguments
                   </Text>
                   <CodePane
                     style={{ fontSize: "24px", width: 300 }}
                     lang="javascript"
                     source={`type Query {
-  allBooks: [Book]
+  getBlog(
+    _id: String
+  ): Blog
 }`}
                   />
                 </div>
@@ -526,6 +549,15 @@ async allBooks(root, args, context, ast) {
             { loc: [25, 36], title: "To filters in our resolver" }
           ]}
         />
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={4} textColor="secondary">
+            We could abstract that boilerplate
+          </Heading>
+          <Appear order={1}>
+            <Text textColor="secondary">Or ...</Text>
+          </Appear>
+        </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
           <Heading size={4} textColor="secondary">
