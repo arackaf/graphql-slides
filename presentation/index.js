@@ -145,7 +145,7 @@ type Query {
                     source={`type Query {
   getBlog(
     _id: String
-  ): Blog
+  ): BlogResult
 }`}
                   />
                 </div>
@@ -156,7 +156,7 @@ type Query {
 
         <CodeSlide
           transition={["fade"]}
-          style={{ color: "white" }}
+          color="white"
           lang="js"
           code={`allBooks{
   Books{
@@ -498,7 +498,7 @@ type Query {
 
         <CodeSlide
           transition={["fade"]}
-          style={{ color: "white" }}
+          color="white"
           lang="js"
           code={`type Book {
   _id: String
