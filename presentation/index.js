@@ -529,13 +529,10 @@ async allBooks(root, args, context, ast) {
     filters.title = args.title;
   if (args.title_in) 
     filters.title = { $in: args.title_in };
-
   if (args.title_startsWith)
-    filters.title = { $regex: new RegExp("^" + args.title_startsWith, "i") };
+    filters.title = { $regex: ... };
   if (args.title_endsWith)
-    filters.title = { $regex: new RegExp(args.title_endsWith + "$", "i") };
-  if (args.title_contains)
-    filters.title = { $regex: new RegExp(args.title_contains, "i") };
+  // ...
 
   return await db
     .collection("books")
@@ -546,7 +543,7 @@ async allBooks(root, args, context, ast) {
             { loc: [0, 0], title: "What does this boil down to" },
             { loc: [3, 4], title: "Property on our type" },
             { loc: [12, 17], title: "To arguments in our query" },
-            { loc: [25, 36], title: "To filters in our resolver" }
+            { loc: [25, 33], title: "To filters in our resolver" }
           ]}
         />
 
