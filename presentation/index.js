@@ -51,6 +51,12 @@ export default class Presentation extends React.Component {
         </Slide>
         <Slide transition={["fade"]} bgColor="primary">
           <Heading size={3} textColor="secondary">
+            To see these slides
+          </Heading>
+          <Text textColor="secondary">https://github.com/arackaf/graphql-slides</Text>
+        </Slide>
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={3} textColor="secondary">
             What do these have in common?
           </Heading>
           <List textColor="secondary">
@@ -601,6 +607,10 @@ async allBooks(root, args, context, ast) {
         </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={6} textColor="secondary">
+            https://github.com/arackaf/mongo-graphql-starter
+          </Heading>
+          <br />
           <Image src="img/myRepo.png" />
         </Slide>
 
@@ -751,10 +761,95 @@ let selections = new Map(
 
         <Slide transition={["fade"]} bgColor="primary">
           <Heading size={3} textColor="secondary">
+            What about selecting data from multiple tables?
+          </Heading>
+        </Slide>
+
+        <CodeSlide
+          transition={["fade"]}
+          style={{ color: "white" }}
+          lang="js"
+          code={`type Person {
+  name: String,
+  age: Int,
+  addressIds: [Int],
+  addresses: [Address]
+}
+
+type Address {
+  _id: Int,
+  streetAddress: String
+  city: String,
+  state: String,
+  zip: String
+}
+
+export default {
+  Person: {
+    async addresses(person, args, context, ast) {
+      // -------------^
+      // the actual person object for which you need
+      // to load the addresses
+
+      // fetch the addresses from your database
+      return [];
+    }
+  },
+  Query: {
+    async allPeople(root, args, context, ast) {
+      return [
+        { name: "Adam", age: 35, addressIds: [1, 2, 3] },
+        { name: "Bob", age: 25, addressIds: [4] },
+        { name: "Laura", age: 35, addressIds: [1, 3] }
+      ];
+    }
+  }
+};`}
+          ranges={[
+            { loc: [0, 14], title: "Some types" },
+            { loc: [3, 4], title: "Foreign keys" },
+            { loc: [4, 5], title: "And their result" },
+            { loc: [26, 35], title: "People query" },
+            { loc: [16, 26], title: "Get the addresses" },
+            { loc: [28, 33], title: "The results" },
+            { loc: [17, 25], title: "Get Adam's addresses" },
+            { loc: [17, 25], title: "Get Bob's addresses" },
+            { loc: [17, 25], title: "Get Laura's addresses" }
+          ]}
+        />
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={3} textColor="secondary">
+            N + 1
+          </Heading>
+          <Appear order={1}>
+            <Image src="img/jimCarreyGross.gif" />
+          </Appear>
+        </Slide>
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={5} textColor="secondary">
+            https://www.npmjs.com/package/dataloader
+          </Heading>
+          <br />
+          <Image src="img/dataLoader.png" />
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={3} textColor="secondary">
             That's what the server looks like. What about the client?
           </Heading>
         </Slide>
 
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={4} textColor="secondary">
+            You can absolutely make GraphQL requests with fetch
+          </Heading>
+          <Appear order={1}>
+            <Text textColor="secondary">Or...</Text>
+          </Appear>
+        </Slide>
+
+        {/*
         <Slide style={{}} transition={["fade"]} bgColor="white">
           <div style={{ width: 900 }}>
             <CodePane
@@ -821,6 +916,7 @@ export const gqlGet = query => fetch(
             />
           </div>
         </Slide>
+*/}
 
         <Slide transition={["fade"]} bgColor="primary">
           <Image src="img/homer.gif" />
@@ -908,6 +1004,38 @@ class Profile extends Component { ... }
 `}
             />
           </div>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={1} textColor="secondary">
+            Resources
+          </Heading>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={5} textColor="secondary">
+            https://www.fullstackreact.com/
+          </Heading>
+          <Image src="img/fsReact.jpg" />
+        </Slide>
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={6} textColor="secondary">
+            https://dev-blog.apollodata.com/full-stack-react-graphql-tutorial-582ac8d24e3b
+          </Heading>
+          <Image src="img/mediumPart1.png" />
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Image src="img/stubailo.png" />
+          <Heading size={6} textColor="secondary">
+            https://dev-blog.apollodata.com/the-anatomy-of-a-graphql-query-6dffa9e9e747
+          </Heading>
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={1} textColor="secondary">
+            Questions?
+          </Heading>
         </Slide>
       </Deck>
     );
