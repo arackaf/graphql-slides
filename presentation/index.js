@@ -192,9 +192,9 @@ getBlog(_id: "456"){
           ranges={[
             { loc: [0, 6], title: "Running a basic query" },
             { loc: [0, 1], title: "Name of the query" },
-            { loc: [1, 5], title: "Telling GraphQL what data we want" },
-            { loc: [7, 8], title: "We can also pass arguments" },
-            { loc: [11, 14], title: "Nested relationships are supported" },
+            { loc: [1, 5], title: "Select results" },
+            { loc: [7, 8], title: "Passing arguments" },
+            { loc: [11, 14], title: "Nested relationships" },
             { loc: [14, 23], title: "As deeply as needed" }
           ]}
         />
@@ -546,7 +546,7 @@ async allBooks(root, args, context, ast) {
     .toArray();
 }`}
           ranges={[
-            { loc: [0, 0], title: "What does this boil down to" },
+            { loc: [0, 0], title: "Recap" },
             { loc: [3, 4], title: "Property on our type" },
             { loc: [12, 17], title: "To arguments in our query" },
             { loc: [25, 33], title: "To filters in our resolver" }
@@ -616,7 +616,7 @@ async allBooks(root, args, context, ast) {
 
         <Slide transition={["fade"]} bgColor="primary">
           <Heading size={4} textColor="secondary">
-            The point of GraphQL is this
+            The (a) benefit of GraphQL is this
           </Heading>
           <br />
           <Text textColor="secondary">
@@ -788,8 +788,8 @@ export default {
   Person: {
     async addresses(person, args, context, ast) {
       // -------------^
-      // the actual person object for which you need
-      // to load the addresses
+      // the person object for which you need
+      // to load addresses
 
       // fetch the addresses from your database
       return [];
@@ -798,9 +798,9 @@ export default {
   Query: {
     async allPeople(root, args, context, ast) {
       return [
-        { name: "Adam", age: 35, addressIds: [1, 2, 3] },
-        { name: "Bob", age: 25, addressIds: [4] },
-        { name: "Laura", age: 35, addressIds: [1, 3] }
+        { name: "Adam", addressIds: [1, 2, 3] },
+        { name: "Bob", addressIds: [4] },
+        { name: "Laura", addressIds: [1, 3] }
       ];
     }
   }
