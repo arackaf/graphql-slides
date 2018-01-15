@@ -86,19 +86,24 @@ export default class Presentation extends React.Component {
           </Heading>
           <List textColor="secondary">
             <ListItem>Type system for queries</ListItem>
-            <ListItem>Nested / Graph-like data</ListItem>
             <ListItem>Query language tying it together</ListItem>
+            <ListItem>Nested / Graph-like data</ListItem>
+            <ListItem>Just request what you need</ListItem>
+            <ListItem>One really smart endpoint, instead of many dumb ones -JH</ListItem>
           </List>
         </Slide>
         <Slide transition={["fade"]} bgColor="primary">
-          <Heading textColor="secondary">A quick tour</Heading>
+          <Heading textColor="secondary">Let's explore how do implement this</Heading>
+          <Appear order={1}>
+            <Text textColor="secondary">Please don't get overwhelmed!</Text>
+          </Appear>
         </Slide>
         <Slide transition={["fade"]} bgColor="white">
           <Layout>
             <Appear order={1}>
               <Fill>
                 <div style={{ width: 300 }}>
-                  <Text style={{ fontSize: "36px" }} textColor="secondary">
+                  <Text style={{ fontSize: "36px" }} textColor="primary">
                     Declare the schema
                   </Text>
                   <CodePane
@@ -121,7 +126,7 @@ export default class Presentation extends React.Component {
             <Appear order={2}>
               <Fill>
                 <div style={{ width: 400 }}>
-                  <Text style={{ fontSize: "36px" }} textColor="secondary">
+                  <Text style={{ fontSize: "36px" }} textColor="primary">
                     And the query
                   </Text>
                   <CodePane
@@ -142,7 +147,7 @@ type Query {
             <Appear order={3}>
               <Fill>
                 <div style={{ width: 300 }}>
-                  <Text style={{ fontSize: "36px" }} textColor="secondary">
+                  <Text style={{ fontSize: "36px" }} textColor="primary">
                     With arguments
                   </Text>
                   <CodePane
@@ -201,7 +206,7 @@ getBlog(_id: "456"){
 
         <Slide transition={["fade"]} bgColor="white">
           <div style={{ width: 600 }} style={{ marginTop: -30 }}>
-            <Text style={{ fontSize: "36px" }} textColor="secondary">
+            <Text style={{ fontSize: "36px" }} textColor="primary">
               Get your server up and running
             </Text>
             <CodePane
@@ -251,7 +256,7 @@ app.use(
           <Layout>
             <Fill>
               <div style={{ width: 300 }}>
-                <Text style={{ fontSize: "36px" }} textColor="secondary">
+                <Text style={{ fontSize: "36px" }} textColor="primary">
                   Query from before
                 </Text>
                 <CodePane
@@ -266,7 +271,7 @@ app.use(
             <Fill>
               <Appear order={1}>
                 <div style={{ width: 600 }}>
-                  <Text style={{ fontSize: "36px" }} textColor="secondary">
+                  <Text style={{ fontSize: "36px" }} textColor="primary">
                     And the resolver
                   </Text>
                   <CodePane
