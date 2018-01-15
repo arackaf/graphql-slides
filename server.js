@@ -21,7 +21,6 @@ app.use(require("webpack-hot-middleware")(compiler));
 app.use("/img/", express.static(__dirname + "/img/"));
 
 app.get("/favicon.ico", function(req, res) {
-  console.log("favicon");
   res.sendFile(path.join(__dirname, "favicon.ico"));
 });
 
