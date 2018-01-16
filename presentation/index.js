@@ -57,6 +57,13 @@ export default class Presentation extends React.Component {
         </Slide>
         <Slide transition={["fade"]} bgColor="primary">
           <Heading size={3} textColor="secondary">
+            Prior Art
+          </Heading>
+          <Image src="img/jesseTalk.png" />
+          <Text textColor="secondary">http://slides.com/jesseharlin/graph-ql-and-apollo#/</Text>
+        </Slide>
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={3} textColor="secondary">
             What do these have in common?
           </Heading>
           <List textColor="secondary">
@@ -127,7 +134,7 @@ export default class Presentation extends React.Component {
               <Fill>
                 <div style={{ width: 400 }}>
                   <Text style={{ fontSize: "36px" }} textColor="primary">
-                    And the query
+                    which includes queries
                   </Text>
                   <CodePane
                     style={{ fontSize: "24px", width: 400 }}
@@ -278,7 +285,7 @@ app.use(
                     style={{ fontSize: "24px" }}
                     lang="javascript"
                     source={`Query: {
-  async allBooks(root, args, req, ast) {
+  async allBooks(root, args, ctx, ast) {
     let db = await root.db;
     return await db
       .collection("books")
@@ -363,7 +370,7 @@ app.use(
             <Fill>
               <div style={{ marginLeft: -200, width: 400 }}>
                 <Text style={{ fontSize: "36px" }} textColor="secondary">
-                  Declare the schema
+                  Update the schema
                 </Text>
                 <CodePane
                   style={{ fontSize: "24px" }}
@@ -384,7 +391,7 @@ app.use(
               <Fill>
                 <div style={{ width: 800, marginLeft: "30px" }}>
                   <Text style={{ fontSize: "36px" }} textColor="secondary">
-                    Declare the schema
+                    Update the resolver
                   </Text>
                   <CodePane
                     style={{ fontSize: "14px" }}
@@ -838,6 +845,31 @@ export default {
           <br />
           <Image src="img/dataLoader.png" />
         </Slide>
+        <Slide transition={["fade"]} bgColor="primary">
+          <CodePane
+            style={{ fontSize: "28px" }}
+            lang="javascript"
+            source={`const userLoader = 
+  new DataLoader(keys => batchGetUsers(keys));
+  // array of keys-----------------------^
+
+userLoader.load(1).then(user => ...;
+userLoader.load(2).then(user => ...;
+
+//On event loop tick, dataloader will call 
+batchGetUsers([1, 2]);
+`}
+          />
+        </Slide>
+
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={3} textColor="secondary">
+            Deep breath
+          </Heading>
+        </Slide>
+        <Slide transition={["fade"]} bgColor="primary">
+          <Image src="img/cuteDog.jpg" />
+        </Slide>
 
         <Slide transition={["fade"]} bgColor="primary">
           <Heading size={3} textColor="secondary">
@@ -996,8 +1028,9 @@ const ProfileWithData = graphql(CurrentUserForLayout)(Profile);`}
 //(but not today - this code is made up - don't try to run it)
 import React, { Component } from 'react';
 import { gqlQuery } from 'react-apollo';
+import gql from 'graphql-tag';
 
-@gqlQuery(\`
+@gqlQuery(gql\`
   query CurrentUserForLayout {
     currentUser {
       login
