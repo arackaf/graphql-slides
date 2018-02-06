@@ -1019,27 +1019,60 @@ const ProfileWithData = graphql(CurrentUserForLayout)(Profile);`}
           </div>
         </Slide>
 
+        <Slide transition={["fade"]} bgColor="primary">
+          <Heading size={3} textColor="secondary">
+            My own
+            <Appear order={1}>
+              <Image src="img/micro.png" />
+            </Appear>
+          </Heading>
+        </Slide>
+
         <Slide style={{}} transition={["fade"]} bgColor="white">
           <div style={{ width: 900 }}>
             <CodePane
               style={{ fontSize: "22px" }}
               lang="javascript"
-              source={`//Maybe someday soon...
-//(but not today - this code is made up - don't try to run it)
-import React, { Component } from 'react';
-import { gqlQuery } from 'react-apollo';
-import gql from 'graphql-tag';
+              source={`@query(client, props => ({
+  query: \`
+    query ALL_BOOKS ($page: Int) {
+      allBooks(PAGE: $page, PAGE_SIZE: 3) {
+        Books {
+          _id
+          title
+        }
+      }
+    }\`,
+  variables: {
+    page: props.page
+  }
+}))
+class BooksList extends Component {
+  render() {
+    let { loading, loaded, data, error } = this.props;`}
+            />
+          </div>
+        </Slide>
 
-@gqlQuery(gql\`
-  query CurrentUserForLayout {
-    currentUser {
-      login
-      avatar_url
+        <Slide style={{}} transition={["fade"]} bgColor="white">
+          <div style={{ width: 900 }}>
+            <CodePane
+              style={{ fontSize: "22px" }}
+              lang="javascript"
+              source={`@mutation(
+  client,
+  \`mutation modifyBook($title: String) {
+    updateBook(_id: $_id, Updates: { title: $title }) {
+      Book {
+        _id
+        title
+      }
     }
   }\`
 )
-class Profile extends Component { ... }
-`}
+class BasicMutation extends Component {
+  render() {
+    let { running, finished, runMutation } = this.props;`}
             />
           </div>
         </Slide>
